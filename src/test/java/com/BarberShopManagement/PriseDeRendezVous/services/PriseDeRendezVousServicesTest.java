@@ -2,19 +2,17 @@ package com.BarberShopManagement.PriseDeRendezVous.services;
 
 import com.BarberShopManagement.PriseDeRendezVous.dto.ClientDTO;
 import com.BarberShopManagement.PriseDeRendezVous.dto.EmployeeDTO;
-import com.BarberShopManagement.PriseDeRendezVous.entities.RendezVous;
-import com.BarberShopManagement.PriseDeRendezVous.entities.Styles;
+import com.BarberShopManagement.PriseDeRendezVous.models.dto.RendezVousDto;
+import com.BarberShopManagement.PriseDeRendezVous.models.dto.StylesDto;
+import com.BarberShopManagement.PriseDeRendezVous.models.entities.RendezVous;
+import com.BarberShopManagement.PriseDeRendezVous.models.entities.Styles;
 import com.BarberShopManagement.PriseDeRendezVous.repositories.RendezVousRepository;
 import com.BarberShopManagement.PriseDeRendezVous.repositories.StylesRepository;
-import org.hibernate.mapping.Any;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockMultipartFile;
 
-import javax.swing.text.Style;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,7 +71,7 @@ class PriseDeRendezVousServicesTest {
         clientDTO.setEmail("client@gmail.com");
         Styles styles=new Styles();
         when(stylesRepository.findById(anyLong())).thenReturn(java.util.Optional.of(styles));
-        RendezVous rendezVousRetour= priseDeRendezVousServices.createRendezVous(
+        RendezVousDto rendezVousRetour= priseDeRendezVousServices.createRendezVous(
                 54L,
                 new Date(System.currentTimeMillis()),
                 employeeDTO,clientDTO);
@@ -104,7 +102,7 @@ class PriseDeRendezVousServicesTest {
         clientDTO.setEmail("client@gmail.com");
         Styles styles=new Styles();
         when(stylesRepository.findById(anyLong())).thenReturn(java.util.Optional.of(styles));
-        RendezVous rendezVousRetour= priseDeRendezVousServices.createRendezVous(
+        RendezVousDto rendezVousRetour= priseDeRendezVousServices.createRendezVous(
                 54L,
                 new Date(2020,07,04,10,15,0),
                 employeeDTO,clientDTO);
@@ -128,7 +126,7 @@ class PriseDeRendezVousServicesTest {
         EmployeeDTO employeeDTO=new EmployeeDTO();
         employeeDTO.setEmail("employee@gmail.com");
         when(stylesRepository.save(any())).thenReturn(styles);
-        Styles reponse =priseDeRendezVousServices.createStyle(styles,employeeDTO);
+        StylesDto reponse =priseDeRendezVousServices.createStyle(styles,employeeDTO);
         assertTrue(reponse.getBarberEmail().contentEquals(employeeDTO.getEmail()));
 
     }

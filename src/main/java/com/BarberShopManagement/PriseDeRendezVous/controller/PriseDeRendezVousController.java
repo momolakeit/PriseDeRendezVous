@@ -2,7 +2,7 @@ package com.BarberShopManagement.PriseDeRendezVous.controller;
 
 import com.BarberShopManagement.PriseDeRendezVous.dto.ClientDTO;
 import com.BarberShopManagement.PriseDeRendezVous.dto.EmployeeDTO;
-import com.BarberShopManagement.PriseDeRendezVous.entities.Styles;
+import com.BarberShopManagement.PriseDeRendezVous.models.entities.Styles;
 import com.BarberShopManagement.PriseDeRendezVous.services.PriseDeRendezVousServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

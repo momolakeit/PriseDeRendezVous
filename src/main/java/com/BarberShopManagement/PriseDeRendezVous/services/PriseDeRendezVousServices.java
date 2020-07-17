@@ -2,8 +2,13 @@ package com.BarberShopManagement.PriseDeRendezVous.services;
 
 import com.BarberShopManagement.PriseDeRendezVous.dto.ClientDTO;
 import com.BarberShopManagement.PriseDeRendezVous.dto.EmployeeDTO;
-import com.BarberShopManagement.PriseDeRendezVous.entities.RendezVous;
-import com.BarberShopManagement.PriseDeRendezVous.entities.Styles;
+import com.BarberShopManagement.PriseDeRendezVous.models.dto.RendezVousDto;
+import com.BarberShopManagement.PriseDeRendezVous.models.dto.StylesDto;
+import com.BarberShopManagement.PriseDeRendezVous.models.entities.RendezVous;
+import com.BarberShopManagement.PriseDeRendezVous.models.entities.Styles;
+import com.BarberShopManagement.PriseDeRendezVous.models.mapping.MapperInterface;
+import com.BarberShopManagement.PriseDeRendezVous.models.mapping.RendezvVousToRendezVousdDTOMapper;
+import com.BarberShopManagement.PriseDeRendezVous.models.mapping.StylesToStylesDTOMapper;
 import com.BarberShopManagement.PriseDeRendezVous.repositories.RendezVousRepository;
 import com.BarberShopManagement.PriseDeRendezVous.repositories.StylesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +42,21 @@ public class PriseDeRendezVousServices {
 
 
 
-    public RendezVous createRendezVous(Long styleId, Date date, EmployeeDTO employeeDTO, ClientDTO clientDTO){
+    public RendezVousDto createRendezVous(Long styleId, Date date, EmployeeDTO employeeDTO, ClientDTO clientDTO){
+
          Styles styles= stylesRepository.findById(styleId).get();
+        RendezVousDto rendezVousDto =new RendezVousDto();
          RendezVous rendezVous=new RendezVous();
          rendezVous.setBarberEmail(employeeDTO.getEmail());
          rendezVous.setClientEmail(clientDTO.getEmail());
          rendezVous.setDateRendezVous(date);
+         rendezVous.setStyles(addItem(new ArrayList<>(),styles));
          if(validateRendezVousPourEmploye(employeeDTO,rendezVous)){
-             return rendezVousRepository.save(rendezVous);
+             rendezVous =rendezVousRepository.save(rendezVous);
+             rendezVousDto.setStyles(convertItem(new ArrayList<>(),
+                                         RendezvVousToRendezVousdDTOMapper.instance,
+                                          rendezVous.getStyles()));
+             return rendezVousDto;
 
          }
 
@@ -52,6 +64,7 @@ public class PriseDeRendezVousServices {
     }
 
     private boolean validateRendezVousPourEmploye(EmployeeDTO employeeDTO,RendezVous rendezVous){
+
         List<RendezVous> allRendezVous= rendezVousRepository.findByBarberEmail(employeeDTO.getEmail());
         allRendezVous.add(rendezVous);
         LinkedList<RendezVous> list= allRendezVous.stream().
@@ -77,9 +90,15 @@ public class PriseDeRendezVousServices {
     return returnVal;
     }
 
-    public Styles createStyle (Styles styles,EmployeeDTO employeeDTO){
+    public StylesDto createStyle (Styles styles,EmployeeDTO employeeDTO){
         styles.setBarberEmail(employeeDTO.getEmail());
-        return stylesRepository.save(styles);
+        styles=stylesRepository.save(styles);
+        StylesDto stylesDto =new StylesDto();
+        stylesDto = StylesToStylesDTOMapper.instance.convert(styles);
+        stylesDto.setRendezVous(convertItem(new ArrayList<>(),
+                                            StylesToStylesDTOMapper.instance,
+                                            styles.getRendezVous()));
+        return stylesDto;
     }
 
     private Long timeToMinutes(Long time){
@@ -96,5 +115,17 @@ public class PriseDeRendezVousServices {
             e.printStackTrace();
         }
         return null;
+    }
+    private <T,Q> List<T> convertItem(List<T> arrayList, MapperInterface converter, List<Q> objToConvert){
+        if(Objects.nonNull(objToConvert)){
+            for(Q x:objToConvert){
+                arrayList.add((T)converter.convert(x));
+            }
+        }
+        return arrayList;
+    }
+    private <T> List<T> addItem(List<T> list,T item){
+        list.add(item);
+        return list;
     }
 }

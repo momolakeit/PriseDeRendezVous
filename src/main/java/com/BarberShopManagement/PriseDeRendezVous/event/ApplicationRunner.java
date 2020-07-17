@@ -1,11 +1,9 @@
 package com.BarberShopManagement.PriseDeRendezVous.event;
 
-import com.BarberShopManagement.PriseDeRendezVous.entities.RendezVous;
+import com.BarberShopManagement.PriseDeRendezVous.models.entities.RendezVous;
 import com.BarberShopManagement.PriseDeRendezVous.repositories.RendezVousRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-
-import java.util.Date;
 
 public class ApplicationRunner implements CommandLineRunner {
     @Autowired

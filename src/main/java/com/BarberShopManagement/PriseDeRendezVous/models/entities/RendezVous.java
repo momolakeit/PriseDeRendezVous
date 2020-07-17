@@ -1,4 +1,4 @@
-package com.BarberShopManagement.PriseDeRendezVous.entities;
+package com.BarberShopManagement.PriseDeRendezVous.models.entities;
 
 import javax.persistence.*;
 import java.util.Date;

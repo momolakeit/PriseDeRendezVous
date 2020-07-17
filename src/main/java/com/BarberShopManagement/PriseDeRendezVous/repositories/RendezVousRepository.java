@@ -1,6 +1,6 @@
 package com.BarberShopManagement.PriseDeRendezVous.repositories;
 
-import com.BarberShopManagement.PriseDeRendezVous.entities.RendezVous;
+import com.BarberShopManagement.PriseDeRendezVous.models.entities.RendezVous;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
