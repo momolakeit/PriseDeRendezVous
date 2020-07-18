@@ -13,6 +13,8 @@ config:
   styles:
     images:
       path: "http://localhost:8081/stylesImages"
+  securite:
+    active: false
 
 security:
   oauth2:

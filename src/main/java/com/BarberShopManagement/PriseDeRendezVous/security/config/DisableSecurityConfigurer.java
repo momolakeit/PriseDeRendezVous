@@ -12,14 +12,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
-@ConditionalOnProperty (name = "config.securite.active", havingValue = "true", matchIfMissing = true)
-public class SecurityConfigurer extends WebSecurityConfigurerAdapter implements  SecuriteConfigImpl {
+@ConditionalOnProperty (name = "config.securite.active", havingValue = "false")
+public class DisableSecurityConfigurer extends WebSecurityConfigurerAdapter implements  SecuriteConfigImpl {
 
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().anyRequest().authenticated().
+        http.csrf().disable().authorizeRequests().anyRequest().permitAll().
                 and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
 
         http.headers().frameOptions().disable();

@@ -1,7 +1,7 @@
 package com.BarberShopManagement.PriseDeRendezVous.services;
 
-import com.BarberShopManagement.PriseDeRendezVous.dto.ClientDTO;
-import com.BarberShopManagement.PriseDeRendezVous.dto.EmployeeDTO;
+import com.BarberShopManagement.PriseDeRendezVous.models.dto.ClientDTO;
+import com.BarberShopManagement.PriseDeRendezVous.models.dto.EmployeeDTO;
 import com.BarberShopManagement.PriseDeRendezVous.models.dto.RendezVousDto;
 import com.BarberShopManagement.PriseDeRendezVous.models.dto.StylesDto;
 import com.BarberShopManagement.PriseDeRendezVous.models.entities.RendezVous;
@@ -42,19 +42,21 @@ public class PriseDeRendezVousServices {
 
 
 
-    public RendezVousDto createRendezVous(Long styleId, Date date, EmployeeDTO employeeDTO, ClientDTO clientDTO){
-
+    public RendezVousDto createRendezVous(Long styleId, Date date, String employeeDTOEmail, String clientDTOemail){
+        List<Styles> stylesList =new ArrayList<>();
+         stylesRepository.findAll().forEach(stylesList::add);
          Styles styles= stylesRepository.findById(styleId).get();
-        RendezVousDto rendezVousDto =new RendezVousDto();
+         RendezVousDto rendezVousDto =new RendezVousDto();
          RendezVous rendezVous=new RendezVous();
-         rendezVous.setBarberEmail(employeeDTO.getEmail());
-         rendezVous.setClientEmail(clientDTO.getEmail());
+         rendezVous.setBarberEmail(employeeDTOEmail);
+         rendezVous.setClientEmail(clientDTOemail);
          rendezVous.setDateRendezVous(date);
          rendezVous.setStyles(addItem(new ArrayList<>(),styles));
-         if(validateRendezVousPourEmploye(employeeDTO,rendezVous)){
+         if(validateRendezVousPourEmploye(employeeDTOEmail,rendezVous)){
              rendezVous =rendezVousRepository.save(rendezVous);
+             rendezVousDto= RendezvVousToRendezVousdDTOMapper.instance.convert(rendezVous);
              rendezVousDto.setStyles(convertItem(new ArrayList<>(),
-                                         RendezvVousToRendezVousdDTOMapper.instance,
+                                         StylesToStylesDTOMapper.instance,
                                           rendezVous.getStyles()));
              return rendezVousDto;
 
@@ -63,9 +65,9 @@ public class PriseDeRendezVousServices {
          return null;
     }
 
-    private boolean validateRendezVousPourEmploye(EmployeeDTO employeeDTO,RendezVous rendezVous){
+    private boolean validateRendezVousPourEmploye(String barberEmail,RendezVous rendezVous){
 
-        List<RendezVous> allRendezVous= rendezVousRepository.findByBarberEmail(employeeDTO.getEmail());
+        List<RendezVous> allRendezVous= rendezVousRepository.findByBarberEmail(barberEmail);
         allRendezVous.add(rendezVous);
         LinkedList<RendezVous> list= allRendezVous.stream().
                 sorted(Comparator.comparing(RendezVous::getDateRendezVous)).

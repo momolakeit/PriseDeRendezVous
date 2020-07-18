@@ -1,7 +1,7 @@
 package com.BarberShopManagement.PriseDeRendezVous.services;
 
-import com.BarberShopManagement.PriseDeRendezVous.dto.ClientDTO;
-import com.BarberShopManagement.PriseDeRendezVous.dto.EmployeeDTO;
+import com.BarberShopManagement.PriseDeRendezVous.models.dto.ClientDTO;
+import com.BarberShopManagement.PriseDeRendezVous.models.dto.EmployeeDTO;
 import com.BarberShopManagement.PriseDeRendezVous.models.dto.RendezVousDto;
 import com.BarberShopManagement.PriseDeRendezVous.models.dto.StylesDto;
 import com.BarberShopManagement.PriseDeRendezVous.models.entities.RendezVous;
@@ -52,7 +52,7 @@ class PriseDeRendezVousServicesTest {
         assertNull(priseDeRendezVousServices.createRendezVous(
                   54L,
                         new Date(System.currentTimeMillis()),
-                        employeeDTO,clientDTO));
+                        employeeDTO.getEmail(),clientDTO.getEmail()));
 
 
     }
@@ -74,7 +74,7 @@ class PriseDeRendezVousServicesTest {
         RendezVousDto rendezVousRetour= priseDeRendezVousServices.createRendezVous(
                 54L,
                 new Date(System.currentTimeMillis()),
-                employeeDTO,clientDTO);
+                employeeDTO.getEmail(),clientDTO.getEmail());
         assertNotNull(rendezVousRetour);
 
     }
@@ -105,7 +105,7 @@ class PriseDeRendezVousServicesTest {
         RendezVousDto rendezVousRetour= priseDeRendezVousServices.createRendezVous(
                 54L,
                 new Date(2020,07,04,10,15,0),
-                employeeDTO,clientDTO);
+                employeeDTO.getEmail(),clientDTO.getEmail());
         assertNotNull(rendezVousRetour);
 
     }

@@ -6,10 +6,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
 @Configuration
-@ConditionalOnProperty(name = "config.securite.active", havingValue = "true", matchIfMissing = true)
-public class ResourceAccessConfiguration extends ResourceServerConfigurerAdapter implements RessouceAcessImpl {
+@ConditionalOnProperty(name = "config.securite.active", havingValue = "false")
+public class DisableResourceAccessConfiguration extends ResourceServerConfigurerAdapter implements RessouceAcessImpl {
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().anyRequest().permitAll();
     }
 }

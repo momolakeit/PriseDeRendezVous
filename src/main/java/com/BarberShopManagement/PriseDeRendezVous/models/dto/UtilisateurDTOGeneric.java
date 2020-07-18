@@ -1,4 +1,4 @@
-package com.BarberShopManagement.PriseDeRendezVous.dto;
+package com.BarberShopManagement.PriseDeRendezVous.models.dto;
 
 public abstract class UtilisateurDTOGeneric {
     private long id;
