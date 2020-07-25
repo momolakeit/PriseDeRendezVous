@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -106,18 +107,18 @@ public class PriseDeRendezVousServices {
     private Long timeToMinutes(Long time){
         return time /1000/60;
     }
-    public String uploadFile(MultipartFile file){
-        String fileName = StringUtils.cleanPath(UUID.randomUUID().toString());
-        Path path = Paths.get(fileBasePath + fileName);
-        try {
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-            return path.toString();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String uploadFile(MultipartFile file) throws IOException {
+        Path currentRelativePath = Paths.get("");
+        String absolutePath = currentRelativePath.toAbsolutePath().toString();
+        String fileName = StringUtils.cleanPath(UUID.randomUUID().toString());
+        String pathDansProjet=fileBasePath + fileName+".jpg";
+        File imgFile = new File(absolutePath+pathDansProjet);
+        file.transferTo(imgFile);
+
+        return pathDansProjet;
     }
+
     private <T,Q> List<T> convertItem(List<T> arrayList, MapperInterface converter, List<Q> objToConvert){
         if(Objects.nonNull(objToConvert)){
             for(Q x:objToConvert){
