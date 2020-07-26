@@ -123,8 +123,6 @@ class PriseDeRendezVousControllerTest {
 
         assertTrue("barber@email.com".contentEquals(returnValue.get("barberEmail").toString()));
         assertTrue(file.exists());
-
-
     }
 
 }
